@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+					<section class="_135editor" data-tools="666" data-id="87890">
+						<section>
+							<section style="display: flex;z-index: 99;margin-bottom: -8px;margin-left:3%;">
+								<img src="https://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpel9wbmcvbGRGYUJOU2t2SGlhaWNkMHJ0Sm5hMXNTYVN3U1pCTE5RMzh2bWhmU1VpYk1tREtJdHlTT1dhM1pLcUxuUG53SkRVdVJuT2VVRGdNaWNTNEhCdXR1cEFyU0JRLzA=" alt="" style="box-sizing:border-box;vertical-align:inherit;background-color: white;padding:4px;width:25px;" draggable="false" data-ratio="0.76" data-w="25"/>
+							</section>
+						   <footer>
+							   <section style="border-top: 1px solid #3f3f3f;border-bottom: 1px solid #3f3f3f;text-align: justify;font-size: 14px;line-height: 1.75em;letter-spacing: 1.5px;padding:5px 2%;">
+								<p hm_fix="321:812" style="color:white;">
+								  网盘换了很多个了，希望大家善待,所有壁纸来源于“https://wallhaven.cc/”，如有违规联系删除
+								</p>
+								</section>
+							</footer>
+							
+						</section>
+					</section>
+					<p>
+						<br />
+					</p>
+					<style> 
+					.index-box.css-1jif775 {
+						opacity: 0.7;
+					}
+					   </style>
+					<style type="text/css">
+						* {
+							margin: 0;
+							padding: 0;
+						}
+						#canvas {
+							background-color: black;
+							display: block;
+						}
+						.css-f4h6uy{
+							color: white;
+						}
+					</style>
+					<script type="text/javascript">
+					//切换背景图片
+					//这里可以添加图片路径，每个路径用""包起来，每个路径之间用逗号分开，要在英文状态下输入符号。
+					
+					var bg_img=["https://w.wallhaven.cc/full/g7/wallhaven-g7yv8q.jpg","https://w.wallhaven.cc/full/l3/wallhaven-l3ljwr.jpg","https://w.wallhaven.cc/full/k7/wallhaven-k7y811.png","https://w.wallhaven.cc/full/k7/wallhaven-k7y811.png","https://w.wallhaven.cc/full/dp/wallhaven-dp12kg.jpg","https://w.wallhaven.cc/full/y8/wallhaven-y819xg.jpg","https://w.wallhaven.cc/full/8o/wallhaven-8ozmlk.jpg"] 
+					
+					document.body.style.background="url("+bg_img[Math.floor(Math.random()*(bg_img.length))]+")";  
+					
+					
+					
+					
+					// //产生随机数
+					// var currentImg = Math.floor(Math.random() * 3);
+					// //定义一个存放照片位置的数组，可以放任意个，在这里放3个
+					// var arr = new Array();
+					// arr[0] = "https://w.wallhaven.cc/full/g7/wallhaven-g7yv8q.jpg";
+					// arr[1] = "https://w.wallhaven.cc/full/l3/wallhaven-l3ljwr.jpg";
+					// arr[2] = "https://w.wallhaven.cc/full/k7/wallhaven-k7y811.png";
+					
+					// function changeImg() {
+					//      if (curIndex > arr.length - 2) {
+					//          curIndex = 0;
+					//      } els {  
+					//      	 curIndex += 1;
+					//      	 }
+					//     document.body.style.backgroundImage = "url(" + arr[currentImg] + ")";  //显示对应的图片
+					// }
+
+
+					
+					
+					
+						(function fairyDustCursor() {
+						 
+						    var possibleColors = ["#D61C59", "#E7D84B", "#1B8798"]
+						    var width = window.innerWidth;
+						    var height = window.innerHeight;
+						    var cursor = { x: width / 2, y: width / 2 };
+						    var particles = [];
+						 
+						    function init() {
+						      bindEvents();
+						      loop();
+						    }
+						 
+						    // Bind events that are needed
+						    function bindEvents() {
+						      document.addEventListener('mousemove', onMouseMove);
+						      window.addEventListener('resize', onWindowResize);
+						    }
+						 
+						    function onWindowResize(e) {
+						      width = window.innerWidth;
+						      height = window.innerHeight;
+						    }
+						 
+						    function onMouseMove(e) {
+						      cursor.x = e.clientX;
+						      cursor.y = e.clientY;
+						 
+						      addParticle(cursor.x, cursor.y, possibleColors[Math.floor(Math.random() * possibleColors.length)]);
+						    }
+						 
+						    function addParticle(x, y, color) {
+						      var particle = new Particle();
+						      particle.init(x, y, color);
+						      particles.push(particle);
+						    }
+						 
+						    function updateParticles() {
+						 
+						      // Updated
+						      for (var i = 0; i < particles.length; i++) {
+						        particles[i].update();
+						      }
+						 
+						      // Remove dead particles
+						      for (var i = particles.length - 1; i >= 0; i--) {
+						        if (particles[i].lifeSpan < 0) {
+						          particles[i].die();
+						          particles.splice(i, 1);
+						        }
+						      }
+						 
+						    }
+						 
+						    function loop() {
+						      requestAnimationFrame(loop);
+						      updateParticles();
+						    }
+						 
+						    /**
+						     * Particles
+						     */
+						 
+						    function Particle() {
+						 
+						      this.character = "*";
+						      this.lifeSpan = 120; //ms
+						      this.initialStyles = {
+						        "position": "fixed",
+						        "display": "inline-block",
+						        "top": "0px",
+						        "left": "0px",
+						        "pointerEvents": "none",
+						        "touch-action": "none",
+						        "z-index": "10000000",
+						        "fontSize": "25px",
+						        "will-change": "transform"
+						      };
+						 
+						      // Init, and set properties
+						      this.init = function (x, y, color) {
+						 
+						        this.velocity = {
+						          x: (Math.random() < 0.5 ? -1 : 1) * (Math.random() / 2),
+						          y: 1
+						        };
+						 
+						        this.position = { x: x + 10, y: y + 10 };
+						        this.initialStyles.color = color;
+						 
+						        this.element = document.createElement('span');
+						        this.element.innerHTML = this.character;
+						        applyProperties(this.element, this.initialStyles);
+						        this.update();
+						 
+						        document.querySelector('.chakra-ui-light').appendChild(this.element);
+						      };
+						 
+						      this.update = function () {
+						        this.position.x += this.velocity.x;
+						        this.position.y += this.velocity.y;
+						        this.lifeSpan--;
+						 
+						        this.element.style.transform = "translate3d(" + this.position.x + "px," + this.position.y + "px, 0) scale(" + (this.lifeSpan / 120) + ")";
+						      }
+						 
+						      this.die = function () {
+						        this.element.parentNode.removeChild(this.element);
+						      }
+						 
+						    }
+						 
+						    /**
+						     * Utils
+						     */
+						 
+						    // Applies css `properties` to an element.
+						    function applyProperties(target, properties) {
+						      for (var key in properties) {
+						        target.style[key] = properties[key];
+						      }
+						    }
+						 
+						    if (!('ontouchstart' in window || navigator.msMaxTouchPoints)) init();
+						  })();
+						
+						
+						</script>
+		
+		
+		
+		
+	</body>
+</html>
