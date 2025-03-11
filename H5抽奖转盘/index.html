@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幸运大转盘</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 活动标题区域 -->
+        <div class="header">
+            <div class="title-box">
+                <h1>幸运大转盘</h1>
+                <p class="subtitle">每天3次抽奖机会，100%中奖！</p>
+            </div>
+            <div class="user-info">
+                <span class="chance-text">今日剩余抽奖次数：<b>3</b></span>
+            </div>
+        </div>
+
+        <!-- 转盘区域 -->
+        <div class="wheel-section">
+            <div class="wheel-container">
+                <canvas id="wheel" width="300" height="300"></canvas>
+                <div class="pointer"></div>
+            </div>
+            
+            <button id="spin-btn" class="spin-button">
+                <i class="fas fa-sync-alt"></i>
+                开始抽奖
+            </button>
+        </div>
+
+        <!-- 中奖结果区域 -->
+        <div id="result" class="result-section"></div>
+
+        <!-- 奖品展示区域 -->
+        <div class="prize-section">
+            <h2>奖品列表</h2>
+            <div class="prize-grid">
+                <div class="prize-item">
+                    <span class="prize-tag one">一等奖</span>
+                    <img src="iphone.png" alt="iPhone">
+                    <p>iPhone 15 Pro</p>
+                </div>
+                <div class="prize-item">
+                    <span class="prize-tag two">二等奖</span>
+                    <img src="ipad.png" alt="iPad">
+                    <p>iPad Air</p>
+                </div>
+                <!-- 其他奖品项... -->
+            </div>
+        </div>
+
+        <!-- 活动规则区域 -->
+        <div class="rules-section">
+            <h2>活动规则</h2>
+            <div class="rules-content">
+                <p>1. 每位用户每天可获得3次抽奖机会</p>
+                <p>2. 奖品将在7个工作日内发放</p>
+                <p>3. 活动最终解释权归本公司所有</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
