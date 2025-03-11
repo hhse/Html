@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>照片滤镜工具</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>照片滤镜工具</h1>
+        <div class="upload-container">
+            <input type="file" id="image-input" accept="image/*" class="file-input">
+            <label for="image-input" class="file-label">
+                <i class="fas fa-cloud-upload-alt"></i> 选择图片
+            </label>
+        </div>
+        <div class="image-container">
+            <canvas id="canvas" width="300" height="300"></canvas>
+            <div class="loading" id="loading"></div>
+        </div>
+        <div class="filters-container">
+            <button class="filter-btn tooltip" data-filter="normal" data-tooltip="恢复原始图片">
+                <i class="fas fa-image"></i> 原图
+            </button>
+            <button class="filter-btn tooltip" data-filter="grayscale" data-tooltip="转换为黑白效果">
+                <i class="fas fa-adjust"></i> 黑白
+            </button>
+            <button class="filter-btn tooltip" data-filter="sepia" data-tooltip="添加复古色调">
+                <i class="fas fa-camera-retro"></i> 复古
+            </button>
+            <button class="filter-btn tooltip" data-filter="invert" data-tooltip="反转所有颜色">
+                <i class="fas fa-exchange-alt"></i> 反色
+            </button>
+            <button class="filter-btn tooltip" data-filter="blur" data-tooltip="添加模糊效果">
+                <i class="fas fa-water"></i> 模糊
+            </button>
+            <button class="filter-btn tooltip" data-filter="brightness" data-tooltip="增加亮度">
+                <i class="fas fa-sun"></i> 明亮
+            </button>
+        </div>
+        <button id="download-btn" class="btn" disabled>
+            <i class="fas fa-download"></i> 下载图片
+        </button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
