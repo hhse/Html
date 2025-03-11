@@ -24,7 +24,7 @@ Canvas API是一个功能强大的工具，可以用于创建各种交互式图�
 
 ## 完整代码
 
-完整代码可以在我的GitHub仓库中找到：[链接到你的GitHub仓库]
+完整代码可以在我的GitHub仓库中找到：[[仓库地址](https://github.com/hhse/Html/tree/main/test-photos)]
 
 如有任何问题或建议，欢迎在评论区留言讨论！
 
