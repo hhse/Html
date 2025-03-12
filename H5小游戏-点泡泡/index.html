@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>捕捉泡泡</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <div class="score-board">
+                <span>得分: </span>
+                <span id="score">0</span>
+            </div>
+            <div class="time-board">
+                <span>时间: </span>
+                <span id="time">60</span>s
+            </div>
+        </div>
+        
+        <div id="game-area">
+            <!-- 泡泡会在这里生成 -->
+        </div>
+        
+        <div class="controls">
+            <button id="start-btn">开始游戏</button>
+            <button id="restart-btn" style="display: none;">重新开始</button>
+        </div>
+        
+        <div id="result" style="display: none;">
+            <h2>游戏结束!</h2>
+            <p>最终得分: <span id="final-score">0</span></p>
+            <p>最高分: <span id="high-score">0</span></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
