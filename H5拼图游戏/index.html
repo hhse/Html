@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趣味拼图游戏</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>趣味拼图游戏</h1>
+        </div>
+        <div class="score-board">
+            <div>用时: <span id="timer">00:00</span></div>
+            <div>移动次数: <span id="moves">0</span></div>
+        </div>
+        <div class="puzzle-container" id="puzzleContainer">
+            <div class="puzzle-grid" id="puzzleGrid"></div>
+        </div>
+        <div class="controls">
+            <button class="control-btn" id="startBtn">开始游戏</button>
+            <button class="control-btn" id="restartBtn">重新开始</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
