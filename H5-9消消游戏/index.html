@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>九消游戏</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1a1c2c, #4a4e69, #283593);
+    color: white;
+  }
+  .game-container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+  }
+  .game-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .game-title {
+    font-size: 2.5em;
+    margin: 0 0 10px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  .score {
+    font-size: 1.5em;
+    margin: 0;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(9, 50px);
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .cell {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 
+      inset 0 0 15px rgba(0, 0, 0, 0.3),
+      inset 0 0 5px rgba(255, 255, 255, 0.5),
+      0 4px 8px rgba(0, 0, 0, 0.15);
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  .cell::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 35%;
+    height: 35%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+    border-radius: 50%;
+    filter: blur(2px);
+  }
+  .selected {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    z-index: 1;
+  }
+  .swapping {
+    transition: transform 0.3s ease;
+  }
+  .matching {
+    animation: match 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .dropping {
+    animation: drop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes match {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(0);
+      opacity: 0;
+    }
+  }
+  @keyframes drop {
+    0% {
+      transform: translateY(-80px) scale(0.8);
+      opacity: 0;
+    }
+    70% {
+      transform: translateY(10px) scale(1.1);
+      opacity: 1;
+    }
+    85% {
+      transform: translateY(-5px) scale(0.95);
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+  <div class="game-header">
+    <h1 class="game-title">九消游戏</h1>
+    <p class="score">分数: <span id="scoreDisplay">0</span></p>
+  </div>
+  <div class="grid-container" id="gameGrid"></div>
+</div>
+
+<script>
+const gridSize = 9;
+const colors = [
+  '#FF69B4',  // 粉红
+  '#B8B2A6',  // 莫兰迪灰棕
+  '#87CEEB',  // 天蓝
+  '#98FB98',  // 嫩绿
+  '#FFA07A'   // 浅珊瑚
+];
+let board = [];
+let selectedCell = null;
+let score = 0;
+
+function createBoard() {
+  for (let i = 0; i < gridSize * gridSize; i++) {
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    board.push(randomColor);
+  }
+}
+
+function renderBoard() {
+  const gameGrid = document.getElementById('gameGrid');
+  gameGrid.innerHTML = '';
+  board.forEach((color, index) => {
+    const cell = document.createElement('div');
+    cell.classList.add('cell');
+    cell.style.backgroundColor = color;
+    cell.dataset.index = index;
+    cell.addEventListener('click', () => selectCell(index));
+    gameGrid.appendChild(cell);
+  });
+}
+
+async function selectCell(index) {
+  if (selectedCell === index) {
+    return;
+  }
+
+  const row = Math.floor(index / gridSize);
+  const col = index % gridSize;
+
+  if (selectedCell !== null && (
+    (Math.abs(selectedCell - index) === 1 && Math.floor(selectedCell / gridSize) === row) ||
+    Math.abs(selectedCell - index) === gridSize
+  )) {
+    await swapCells(selectedCell, index);
+
+    if (!checkForMatches()) {
+      await swapCells(selectedCell, index);
+    } else {
+      await processMatches();
+    }
+
+    deselectCell();
+  } else {
+    deselectCell();
+    selectedCell = index;
+    document.querySelector(`.cell[data-index="${index}"]`).classList.add('selected');
+  }
+}
+
+async function swapCells(indexA, indexB) {
+  const cellA = document.querySelector(`.cell[data-index="${indexA}"]`);
+  const cellB = document.querySelector(`.cell[data-index="${indexB}"]`);
+  
+  const rectA = cellA.getBoundingClientRect();
+  const rectB = cellB.getBoundingClientRect();
+  
+  const deltaX = rectB.left - rectA.left;
+  const deltaY = rectB.top - rectA.top;
+
+  cellA.classList.add('swapping');
+  cellB.classList.add('swapping');
+
+  cellA.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+  cellB.style.transform = `translate(${-deltaX}px, ${-deltaY}px)`;
+
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  [board[indexA], board[indexB]] = [board[indexB], board[indexA]];
+  renderBoard();
+}
+
+function checkForMatches() {
+  let matchesFound = false;
+  let matches = new Set();
+
+  // Check horizontal matches
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col <= gridSize - 3; col++) {
+      const startIndex = row * gridSize + col;
+      if (board[startIndex] === board[startIndex + 1] && 
+          board[startIndex] === board[startIndex + 2]) {
+        matchesFound = true;
+        for (let i = 0; i < 3; i++) {
+          matches.add(startIndex + i);
+        }
+      }
+    }
+  }
+
+  // Check vertical matches
+  for (let col = 0; col < gridSize; col++) {
+    for (let row = 0; row <= gridSize - 3; row++) {
+      const startIndex = row * gridSize + col;
+      if (board[startIndex] === board[startIndex + gridSize] && 
+          board[startIndex] === board[startIndex + 2 * gridSize]) {
+        matchesFound = true;
+        for (let i = 0; i < 3; i++) {
+          matches.add(startIndex + i * gridSize);
+        }
+      }
+    }
+  }
+
+  if (matchesFound) {
+    matches.forEach(index => {
+      board[index] = null;
+    });
+    score += matches.size * 10;
+    document.getElementById('scoreDisplay').textContent = score;
+  }
+
+  return matchesFound;
+}
+
+async function processMatches() {
+  while (true) {
+    const cells = document.querySelectorAll('.cell');
+    const matchingCells = Array.from(cells).filter((cell, index) => board[index] === null);
+
+    if (matchingCells.length === 0) break;
+
+    matchingCells.forEach(cell => {
+      cell.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      cell.style.transform = 'scale(0)';
+      cell.style.opacity = '0';
+    });
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    await fillGaps();
+    await dropNewBalls();
+
+    if (!checkForMatches()) break;
+  }
+}
+
+async function fillGaps() {
+  let changes = [];
+  for (let col = 0; col < gridSize; col++) {
+    let emptyCount = 0;
+    for (let row = gridSize - 1; row >= 0; row--) {
+      const index = row * gridSize + col;
+      if (board[index] === null) {
+        emptyCount++;
+      } else if (emptyCount > 0) {
+        const newIndex = index + emptyCount * gridSize;
+        changes.push({
+          from: index,
+          to: newIndex,
+          color: board[index]
+        });
+        board[newIndex] = board[index];
+        board[index] = null;
+      }
+    }
+  }
+  
+  if (changes.length > 0) {
+    const cells = document.querySelectorAll('.cell');
+    changes.forEach((change, i) => {
+      const fromCell = cells[change.from];
+      const toCell = cells[change.to];
+      const fromRect = fromCell.getBoundingClientRect();
+      const toRect = toCell.getBoundingClientRect();
+      
+      fromCell.style.backgroundColor = change.color;
+      fromCell.style.transform = `translate(0, ${toRect.top - fromRect.top}px)`;
+      fromCell.style.transition = `transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 0.05}s`;
+    });
+    
+    await new Promise(resolve => setTimeout(resolve, 600 + changes.length * 50));
+  }
+  
+  renderBoard();
+}
+
+async function dropNewBalls() {
+  let newBalls = [];
+  for (let col = 0; col < gridSize; col++) {
+    for (let row = 0; row < gridSize; row++) {
+      const index = row * gridSize + col;
+      if (board[index] === null) {
+        const newColor = colors[Math.floor(Math.random() * colors.length)];
+        board[index] = newColor;
+        newBalls.push({
+          index: index,
+          color: newColor
+        });
+      }
+    }
+  }
+
+  renderBoard();
+  
+  if (newBalls.length > 0) {
+    const cells = document.querySelectorAll('.cell');
+    newBalls.forEach((ball, i) => {
+      const cell = cells[ball.index];
+      cell.style.transform = 'translateY(-80px) scale(0.8)';
+      cell.style.opacity = '0';
+      
+      requestAnimationFrame(() => {
+        cell.style.transition = `all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 0.05}s`;
+        cell.style.transform = 'translateY(0) scale(1)';
+        cell.style.opacity = '1';
+        cell.classList.add('dropping');
+      });
+    });
+    
+    await new Promise(resolve => setTimeout(resolve, 600 + newBalls.length * 50));
+    
+    newBalls.forEach(ball => {
+      const cell = cells[ball.index];
+      cell.classList.remove('dropping');
+    });
+  }
+}
+
+function deselectCell() {
+  if (selectedCell !== null) {
+    document.querySelector(`.cell[data-index="${selectedCell}"]`).classList.remove('selected');
+    selectedCell = null;
+  }
+}
+
+createBoard();
+renderBoard();
+</script>
+
+</body>
+</html>
+
+
