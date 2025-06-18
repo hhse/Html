@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 逼真火焰字体效果</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">调整下面输入框中的文字</h1>
+        <input type="text" id="textInput" value="火焰文字" maxlength="20">
+        <div class="canvas-wrapper">
+            <canvas id="fireCanvas"></canvas>
+        </div>
+        <div class="controls">
+            <label for="intensitySlider">火焰强度:</label>
+            <input type="range" id="intensitySlider" min="1" max="10" value="5">
+            
+            <label for="colorSelect">火焰颜色:</label>
+            <select id="colorSelect">
+                <option value="red">红色</option>
+                <option value="blue">蓝色</option>
+                <option value="green">绿色</option>
+                <option value="purple">紫色</option>
+            </select>
+        </div>
+    </div>
+    <script src="fire.js"></script>
+</body>
+</html> 
